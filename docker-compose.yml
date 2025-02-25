@@ -1,0 +1,33 @@
+services:
+
+  # storages
+  customer-db:
+    image: postgres:17.4
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  
+  transaction-db:
+    image: postgres:17.4
+    ports:
+      - "25432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    
+  recommendation-cache:
+    image: redis:7.4.2
+    ports:
+      - "16379:6379"
+
+  # tracing components
+  jaeger:
+    image: jaegertracing/jaeger:2.3.0
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    environment:
+      - LOG_LEVEL=debug
