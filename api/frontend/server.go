@@ -6,11 +6,12 @@ import (
 )
 
 type Server struct {
+	name string
 	addr string
 }
 
 func (s Server) Run() error {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{AppName: s.name})
 
 	app.Use(otelfiber.Middleware())
 
@@ -21,8 +22,9 @@ func (s Server) Run() error {
 	return app.Listen(s.addr)
 }
 
-func NewServer(addr string) Server {
+func NewServer(name, addr string) Server {
 	return Server{
+		name: "frontend",
 		addr: addr,
 	}
 }

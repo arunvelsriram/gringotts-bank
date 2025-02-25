@@ -24,7 +24,7 @@ func main() {
 		}
 	}()
 
-	server := frontend.NewServer(listenAddr)
+	server := frontend.NewServer(service, listenAddr)
 	if err := server.Run(); err != nil {
 		log.Fatalf("server failed to start: %v", err)
 	}
