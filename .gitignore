@@ -1,0 +1,12 @@
+# Editor
+.vscode
+.idea
+
+# Binaries
+bin
+
+# OS X
+.DS_Store
+
+# Env
+.envrc
