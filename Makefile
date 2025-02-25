@@ -4,6 +4,10 @@ RUN_SERVICE_TARGETS=$(foreach service,$(SERVICES),run/$(service))
 
 build: clean $(BUILD_SERVICE_TARGETS)
 
+deps:
+	@go mod tidy -v
+	@go mod vendor
+
 clean:
 	@rm -rf bin
 
