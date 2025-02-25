@@ -2,34 +2,30 @@ package main
 
 import (
 	"context"
+	"gringotts-bank/api/frontend"
 	"gringotts-bank/pkg/tracing"
 	"log"
-
-	"github.com/gofiber/contrib/otelfiber"
-	"github.com/gofiber/fiber/v2"
 )
 
 const service = "frontend"
 const version = "1.0.0"
+const listenAddr = ":8080"
 
 func main() {
 	ctx := context.Background()
 
-	tp := tracing.InitTracer(ctx, service, version)
+	shutDownFunc, err := tracing.Init(ctx, service, version)
+	if err != nil {
+		log.Fatalf("failed to initialize tracer: %v", err)
+	}
 	defer func() {
-		if err := tp.Shutdown(ctx); err != nil {
-			log.Printf("Error shutting down tracer provider: %v", err)
+		if err := shutDownFunc(ctx); err != nil {
+			log.Fatalf("failed to shutdown tracer: %v", err)
 		}
 	}()
 
-	app := fiber.New()
-	app.Use(otelfiber.Middleware())
-
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})
-	})
-
-	if err := app.Listen(":8080"); err != nil {
-		panic(err)
+	server := frontend.NewServer(listenAddr)
+	if err := server.Run(); err != nil {
+		log.Fatalf("server failed to start: %v", err)
 	}
 }

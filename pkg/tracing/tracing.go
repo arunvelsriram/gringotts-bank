@@ -2,7 +2,6 @@ package tracing
 
 import (
 	"context"
-	"log"
 
 	"go.opentelemetry.io/otel/sdk/resource"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
@@ -17,7 +16,9 @@ import (
 
 const otelHttpEndpoint = "localhost:4318"
 
-func InitTracer(ctx context.Context, service, version string) *sdktrace.TracerProvider {
+type ShutdownFunc func(ctx context.Context) error
+
+func Init(ctx context.Context, service, version string) (ShutdownFunc, error) {
 	client := otlptracehttp.NewClient(
 		otlptracehttp.WithEndpoint(otelHttpEndpoint),
 		otlptracehttp.WithInsecure(),
@@ -25,7 +26,7 @@ func InitTracer(ctx context.Context, service, version string) *sdktrace.TracerPr
 
 	exporter, err := otlptrace.New(ctx, client)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	res, err := resource.New(ctx,
@@ -41,7 +42,7 @@ func InitTracer(ctx context.Context, service, version string) *sdktrace.TracerPr
 		resource.WithProcess(),
 	)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	tp := sdktrace.NewTracerProvider(
@@ -53,5 +54,5 @@ func InitTracer(ctx context.Context, service, version string) *sdktrace.TracerPr
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
 
-	return tp
+	return tp.Shutdown, nil
 }
