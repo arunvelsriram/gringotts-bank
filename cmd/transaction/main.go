@@ -9,8 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-const service = "recommendations"
-const version = "1.0.0"
+const service = "transaction"
+const version = "10.0.0"
 
 func main() {
 	ctx := context.Background()
@@ -29,7 +29,7 @@ func main() {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})
 	})
 
-	if err := app.Listen(":8082"); err != nil {
+	if err := app.Listen(":8083"); err != nil {
 		panic(err)
 	}
 }
