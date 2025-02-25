@@ -1,17 +1,19 @@
 package frontend
 
 import (
+	"context"
+
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 )
 
 type Server struct {
-	name string
-	addr string
+	serviceName string
+	listenAddr  string
 }
 
 func (s Server) Run() error {
-	app := fiber.New(fiber.Config{AppName: s.name})
+	app := fiber.New(fiber.Config{AppName: s.serviceName})
 
 	app.Use(otelfiber.Middleware())
 
@@ -19,12 +21,12 @@ func (s Server) Run() error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})
 	})
 
-	return app.Listen(s.addr)
+	return app.Listen(s.listenAddr)
 }
 
-func NewServer(name, addr string) Server {
+func NewServer(ctx context.Context, serviceName, listenAddr string) Server {
 	return Server{
-		name: "frontend",
-		addr: addr,
+		serviceName: serviceName,
+		listenAddr:  listenAddr,
 	}
 }
