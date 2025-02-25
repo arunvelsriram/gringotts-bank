@@ -16,14 +16,6 @@ type Server struct {
 	db          *gorm.DB
 }
 
-type Customer struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Age  int    `json:"age"`
-}
-
-type Customers []Customer
-
 func (s Server) Run() error {
 	app := fiber.New(fiber.Config{AppName: s.serviceName})
 

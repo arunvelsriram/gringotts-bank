@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"gringotts-bank/api/customer"
 	"gringotts-bank/pkg/tracing"
+	"gringotts-bank/service/customer"
 	"log"
 )
 

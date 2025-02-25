@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"gringotts-bank/api/frontend"
 	"gringotts-bank/pkg/tracing"
+	"gringotts-bank/service/frontend"
 	"log"
 )
 
