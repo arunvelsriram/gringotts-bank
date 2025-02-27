@@ -2,17 +2,14 @@ package frontend
 
 import (
 	"context"
-	"gringotts-bank/pkg/http"
-	"gringotts-bank/service/customer"
 
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 )
 
 type Server struct {
-	serviceName    string
-	listenAddr     string
-	customerClient customer.Client
+	serviceName string
+	listenAddr  string
 }
 
 func (s Server) Run() error {
@@ -34,12 +31,8 @@ func (s Server) Run() error {
 }
 
 func NewServer(ctx context.Context, serviceName, listenAddr string) Server {
-	httpClient := http.NewClient()
-	customerClient := customer.NewClient(httpClient)
-
 	return Server{
-		serviceName:    serviceName,
-		listenAddr:     listenAddr,
-		customerClient: customerClient,
+		serviceName: serviceName,
+		listenAddr:  listenAddr,
 	}
 }

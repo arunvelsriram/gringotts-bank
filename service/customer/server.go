@@ -43,6 +43,23 @@ func (s Server) Run() error {
 		return c.Status(fiber.StatusOK).JSON(customers)
 	})
 
+	app.Get("/customers/:id", func(c *fiber.Ctx) error {
+		ctx := c.UserContext()
+		logger := log.Logger(ctx)
+		id := c.Params("id")
+		var customer Customer
+
+		result := s.db.WithContext(ctx).First(&customer, id)
+		if result.Error != nil {
+			logger.Error("failed to get customer from db", zap.Error(result.Error), zap.String("customer_id", id))
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get customers"})
+		}
+
+		logger.Info("fetched customer from db", zap.Int("customer_id", customer.ID))
+
+		return c.Status(fiber.StatusOK).JSON(customer)
+	})
+
 	return app.Listen(s.listenAddr)
 }
 

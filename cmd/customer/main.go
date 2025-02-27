@@ -11,7 +11,7 @@ import (
 
 const service = "customer"
 const version = "5.0.0"
-const listenAddr = ":8081"
+const listenAddr = ":8082"
 const dbConnUrl = "postgresql://postgres:postgres@localhost:15432/postgres?sslmode=disable"
 
 func main() {
