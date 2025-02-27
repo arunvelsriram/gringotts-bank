@@ -8,9 +8,10 @@ Simple Microservices app to demonstarte Distributed Tracing.
 docker-compose up
 ```
 
-## Seed DB Data
+## Seed Data
 
 ```shell
 PGPASSWORD='postgres' psql -h localhost -p 25432 -U postgres -f data/customer/data.sql
 PGPASSWORD='postgres' psql -h localhost -p 25432 -U postgres -f data/transaction/data.sql
+redis-cli -p 16379 < data/recommendation/data.redis
 ```

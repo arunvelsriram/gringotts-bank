@@ -1,0 +1,17 @@
+RPUSH riskinvestor '{"title":"Mutual Funds Management and Demat Account","product":"Investment","description":"Invest in top-performing mutual funds and manage your Demat account seamlessly."}'
+RPUSH riskinvestor '{"title":"Digital Gold","product":"Investment","description":"Invest in Digital Gold seamlessly."}'
+
+RPUSH safeinvestor '{"title":"Fixed Deposit","product":"Deposits","description":"Secure your future with our high-interest Fixed Deposit schemes."}'
+RPUSH safeinvestor '{"title":"Fixed Deposit","product":"Deposits","description":"Secure your future with our high-interest Recurring Deposit schemes."}'
+
+RPUSH premiumcc '{"title":"Gold Credit Card","product":"Credit Card","description":"Exclusive Gold Credit Card with premium benefits, rewards, and cashback on transactions."}'
+RPUSH premiumcc '{"title":"Regalia Credit Card","product":"Credit Card","description":"Exclusive Regalia Credit Card with premium benefits, rewards, and cashback on transactions."}'
+
+RPUSH loans '{"title":"Personal Loan","product":"Loans","description":"Get an instant personal loan with minimal documentation and attractive interest rates."}'
+RPUSH loans '{"title":"Car Loan","product":"Loans","description":"Get an instant car loan with minimal documentation and attractive interest rates."}'
+
+RPUSH upi '{"title":"RuPay UPI Credit Card Basic","product":"Credit Card","description":"Enjoy seamless UPI transactions with the RuPay Credit Card, combining convenience and security."}'
+RPUSH upi '{"title":"RuPay UPI Credit Card Premium","product":"Credit Card","description":"Enjoy seamless UPI transactions with the RuPay Credit Card @ 499 INR only per year, combining convenience and security."}'
+  
+RPUSH seniorcitizen '{"title":"Senior Citizen Fixed Deposit","product":"Deposits","description":"Special Fixed Deposit scheme for senior citizens with higher interest rates and flexible tenures."}'
+RPUSH seniorcitizen '{"title":"Senior Citizen Recurring Deposit","product":"Deposits","description":"A safe and convenient Recurring Deposit plan tailored for senior citizens with attractive interest rates."}'
