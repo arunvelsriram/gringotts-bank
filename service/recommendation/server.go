@@ -32,7 +32,13 @@ func (s Server) Run() error {
 	app.Get("/recommendations", func(c *fiber.Ctx) error {
 		ctx := c.UserContext()
 		logger := log.Logger(ctx)
+
 		id := c.Query("customerId")
+		if id == "" {
+			logger.Error("invalid customer id", zap.String("customer_id", id))
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "customer id is invalid"})
+		}
+
 		var customer Customer
 
 		err := s.customerClient.GetCustomer(ctx, id, &customer)
