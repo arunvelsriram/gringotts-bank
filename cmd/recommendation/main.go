@@ -2,34 +2,39 @@ package main
 
 import (
 	"context"
+	"gringotts-bank/pkg/log"
 	"gringotts-bank/pkg/tracing"
-	"log"
 
-	"github.com/gofiber/contrib/otelfiber"
-	"github.com/gofiber/fiber/v2"
+	"gringotts-bank/service/recommendation"
+
+	"go.uber.org/zap"
 )
 
 const service = "recommendation"
 const version = "1.0.0"
+const listenAddr = ":8081"
+const redisAddr = "localhost:16379"
 
 func main() {
 	ctx := context.Background()
+	logger := log.Logger(ctx)
 
-	tp := tracing.InitTracer(ctx, service, version)
+	shutDownFunc, err := tracing.Init(ctx, service, version)
+	if err != nil {
+		logger.Info("failed to initialize tracer", zap.Error(err))
+	}
 	defer func() {
-		if err := tp.Shutdown(ctx); err != nil {
-			log.Printf("Error shutting down tracer provider: %v", err)
+		if err := shutDownFunc(ctx); err != nil {
+			logger.Fatal("failed to shutdown tracer", zap.Error(err))
 		}
 	}()
 
-	app := fiber.New()
-	app.Use(otelfiber.Middleware())
+	server, err := recommendation.NewServer(ctx, service, listenAddr, redisAddr)
+	if err != nil {
+		logger.Fatal("failed to create server", zap.Error(err))
+	}
 
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})
-	})
-
-	if err := app.Listen(":8082"); err != nil {
-		panic(err)
+	if err := server.Run(); err != nil {
+		logger.Fatal("server failed to start", zap.Error(err))
 	}
 }
