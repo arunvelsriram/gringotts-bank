@@ -24,15 +24,11 @@ func (s Server) Run() error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})
 	})
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		ctx := c.UserContext()
-		customers, err := s.customerClient.GetCustomers(ctx)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get customers"})
-		}
-
-		return c.Status(fiber.StatusOK).JSON(customers)
+	app.Get("/recommendations", func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusOK).JSON([]map[string]interface{}{})
 	})
+
+	app.Static("/", "./service/frontend/web")
 
 	return app.Listen(s.listenAddr)
 }
