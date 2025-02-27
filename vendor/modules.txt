@@ -79,6 +79,12 @@ github.com/mattn/go-runewidth
 # github.com/rivo/uniseg v0.4.3
 ## explicit; go 1.18
 github.com/rivo/uniseg
+# github.com/uptrace/opentelemetry-go-extra/otelutil v0.3.2
+## explicit; go 1.22
+github.com/uptrace/opentelemetry-go-extra/otelutil
+# github.com/uptrace/opentelemetry-go-extra/otelzap v0.1.21
+## explicit; go 1.18
+github.com/uptrace/opentelemetry-go-extra/otelzap
 # github.com/valyala/bytebufferpool v1.0.0
 ## explicit
 github.com/valyala/bytebufferpool
@@ -131,6 +137,10 @@ go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp/internal
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp/internal/envconfig
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp/internal/otlpconfig
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp/internal/retry
+# go.opentelemetry.io/otel/log v0.6.0
+## explicit; go 1.22
+go.opentelemetry.io/otel/log
+go.opentelemetry.io/otel/log/embedded
 # go.opentelemetry.io/otel/metric v1.34.0
 ## explicit; go 1.22.0
 go.opentelemetry.io/otel/metric
@@ -155,6 +165,20 @@ go.opentelemetry.io/proto/otlp/collector/trace/v1
 go.opentelemetry.io/proto/otlp/common/v1
 go.opentelemetry.io/proto/otlp/resource/v1
 go.opentelemetry.io/proto/otlp/trace/v1
+# go.uber.org/multierr v1.11.0
+## explicit; go 1.19
+go.uber.org/multierr
+# go.uber.org/zap v1.27.0
+## explicit; go 1.19
+go.uber.org/zap
+go.uber.org/zap/buffer
+go.uber.org/zap/internal
+go.uber.org/zap/internal/bufferpool
+go.uber.org/zap/internal/color
+go.uber.org/zap/internal/exit
+go.uber.org/zap/internal/pool
+go.uber.org/zap/internal/stacktrace
+go.uber.org/zap/zapcore
 # golang.org/x/crypto v0.32.0
 ## explicit; go 1.20
 golang.org/x/crypto/pbkdf2

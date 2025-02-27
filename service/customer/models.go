@@ -1,9 +1,9 @@
 package customer
 
 type Customer struct {
-	ID   int    `gorm:"id" json:"id"`
-	Name string `gorm:"name" json:"name"`
-	Age  int    `gorm:"age" json:"age"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Age  int    `json:"age"`
 }
 
 type Customers []Customer

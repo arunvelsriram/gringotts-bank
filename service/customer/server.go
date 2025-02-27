@@ -2,9 +2,11 @@ package customer
 
 import (
 	"context"
+	"gringotts-bank/pkg/log"
 
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
+	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/plugin/opentelemetry/tracing"
@@ -26,13 +28,17 @@ func (s Server) Run() error {
 	})
 
 	app.Get("/customers", func(c *fiber.Ctx) error {
-		var customers Customers
 		ctx := c.UserContext()
+		logger := log.Logger(ctx)
+		var customers Customers
 
 		result := s.db.WithContext(ctx).Find(&customers)
 		if result.Error != nil {
+			logger.Error("db query failed", zap.Error(result.Error))
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get customers"})
 		}
+
+		logger.Info("fetched all customers from db", zap.Int("customers", len(customers)))
 
 		return c.Status(fiber.StatusOK).JSON(customers)
 	})
