@@ -2,10 +2,12 @@ package payment
 
 import (
 	"context"
+	"gringotts-bank/pkg/log"
 	"gringotts-bank/pkg/postgres"
 
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -25,7 +27,24 @@ func (s Server) Run() error {
 	})
 
 	app.Get("/customers/:id/transactions", func(c *fiber.Ctx) error {
-		return c.SendStatus(fiber.StatusNotImplemented)
+		ctx := c.UserContext()
+		logger := log.Logger(ctx)
+		customerId := c.Params("id")
+		var transactions Transactions
+
+		logger.Info("getting customer transactions from db", zap.String("customer_id", customerId))
+
+		result := s.db.WithContext(ctx).
+			Where("customer_id = ?", customerId).
+			Find(&transactions)
+		if result.Error != nil {
+			logger.Error("db query failed", zap.Error(result.Error))
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get transactions of customer"})
+		}
+
+		logger.Info("fetched customer transactions from db", zap.Int("transactionsCount", len(transactions)))
+
+		return c.Status(fiber.StatusOK).JSON(transactions)
 	})
 
 	return app.Listen(s.listenAddr)
