@@ -3,13 +3,12 @@ package customer
 import (
 	"context"
 	"gringotts-bank/pkg/log"
+	"gringotts-bank/pkg/postgres"
 
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 	"go.uber.org/zap"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/plugin/opentelemetry/tracing"
 )
 
 type Server struct {
@@ -64,12 +63,8 @@ func (s Server) Run() error {
 }
 
 func NewServer(ctx context.Context, serviceName, listenAddr, dbConnUrl string) (*Server, error) {
-	db, err := gorm.Open(postgres.Open(dbConnUrl), &gorm.Config{})
+	db, err := postgres.NewConnection(dbConnUrl)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := db.Use(tracing.NewPlugin()); err != nil {
 		return nil, err
 	}
 

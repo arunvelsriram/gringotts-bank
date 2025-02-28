@@ -4,12 +4,12 @@ import (
 	"context"
 	"gringotts-bank/pkg/http"
 	"gringotts-bank/pkg/log"
+	"gringotts-bank/pkg/redis"
 	"gringotts-bank/service/customer"
 
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
-	"github.com/redis/go-redis/extra/redisotel/v9"
-	"github.com/redis/go-redis/v9"
+	redispkg "github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +17,7 @@ type Server struct {
 	serviceName    string
 	listenAddr     string
 	customerClient customer.Client
-	rDb            *redis.Client
+	rDb            *redispkg.Client
 }
 
 func (s Server) Run() error {
@@ -65,11 +65,8 @@ func (s Server) Run() error {
 }
 
 func NewServer(ctx context.Context, serviceName, listenAddr, redisAddr string) (*Server, error) {
-	rDb := redis.NewClient(&redis.Options{
-		Addr: redisAddr,
-	})
-
-	if err := redisotel.InstrumentTracing(rDb); err != nil {
+	rDb, err := redis.NewClient(redisAddr)
+	if err != nil {
 		return nil, err
 	}
 

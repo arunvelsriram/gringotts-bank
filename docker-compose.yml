@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
   
-  transaction-db:
+  payment-db:
     image: postgres:17.4
     ports:
       - "25432:5432"

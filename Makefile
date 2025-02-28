@@ -1,4 +1,4 @@
-SERVICES = frontend recommendation customer
+SERVICES = frontend recommendation customer payment
 BUILD_SERVICE_TARGETS=$(foreach service,$(SERVICES),build/$(service))
 RUN_SERVICE_TARGETS=$(foreach service,$(SERVICES),run/$(service))
 

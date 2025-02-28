@@ -12,6 +12,6 @@ docker-compose up
 
 ```shell
 PGPASSWORD='postgres' psql -h localhost -p 25432 -U postgres -f data/customer/data.sql
-PGPASSWORD='postgres' psql -h localhost -p 25432 -U postgres -f data/transaction/data.sql
+PGPASSWORD='postgres' psql -h localhost -p 25432 -U postgres -f data/payment/data.sql
 redis-cli -p 16379 < data/recommendation/data.redis
 ```
