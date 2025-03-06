@@ -7,8 +7,13 @@ document.getElementById('recommendationForm').addEventListener('submit', functio
         fetch(`${BASE_URL}/recommendations?customerId=${encodeURIComponent(customerId)}`)
             .then(response => response.json())
             .then(data => {
-                if (data.length > 0) {
-                    let table = `<table class='table table-bordered mt-3'>
+                let recommendations = data.recommendations;
+                console.log(`recommendations count: ${recommendations.length}`)
+                if (recommendations.length > 0) {
+                    let table = `
+                    <h5> Customer </h5>
+                    <b>ID:</b> ${data.customerId} / <b>Name:</b> ${data.customerName} / <b>Age:</b> ${data.customerAge}
+                    <table class='table table-bordered mt-3'>
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -17,11 +22,11 @@ document.getElementById('recommendationForm').addEventListener('submit', functio
                             </tr>
                         </thead>
                         <tbody>`;
-                    data.forEach(offer => {
+                    recommendations.forEach(recommendation => {
                         table += `<tr>
-                            <td>${offer.title}</td>
-                            <td>${offer.description}</td>
-                            <td>${offer.product}</td>
+                            <td>${recommendation.title}</td>
+                            <td>${recommendation.description}</td>
+                            <td>${recommendation.product}</td>
                         </tr>`;
                     });
                     table += `</tbody></table>`;
