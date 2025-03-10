@@ -2,7 +2,7 @@
 
 Simple Microservices app to demonstarte Distributed Tracing.
 
-## Start Dependent Apps (Databases, Cache, Open Telemetry Collector, Grafana Tempo Stack)
+## Start Dependent Apps (Databases, Cache, Open Telemetry Collector, Jaeger)
 
 ```shell
 docker-compose up
