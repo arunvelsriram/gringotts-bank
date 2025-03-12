@@ -12,7 +12,10 @@ document.getElementById('recommendationForm').addEventListener('submit', functio
                 if (recommendations.length > 0) {
                     let table = `
                     <h5> Customer </h5>
-                    <b>ID:</b> ${data.customerId} / <b>Name:</b> ${data.customerName} / <b>Age:</b> ${data.customerAge}
+                    <p>
+                        <b>ID:</b> ${data.customerId} / <b>Name:</b> ${data.customerName} / <b>Age:</b> ${data.customerAge}
+                    </p>
+                    <h5> Recommendations </h5>
                     <table class='table table-bordered mt-3'>
                         <thead>
                             <tr>
