@@ -133,7 +133,7 @@ func (s Server) computeOffers(ctx context.Context, customer Customer, transactio
 
 	// Intentional Delay
 	if customer.Name == "Hagrid" {
-		time.Sleep(3 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 
 	return offerVariants
