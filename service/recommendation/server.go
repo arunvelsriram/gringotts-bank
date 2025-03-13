@@ -175,7 +175,7 @@ func (s Server) getRecommendations(ctx context.Context, offerVariants OfferVaria
 func NewServer(ctx context.Context, serviceName, listenAddr, redisAddr string) (*Server, error) {
 	httpClient := http.NewClient()
 
-	rDb, err := redis.NewClient(redisAddr)
+	rDb, err := redis.NewClient(ctx, redisAddr)
 	if err != nil {
 		return nil, err
 	}
