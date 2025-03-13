@@ -3,10 +3,18 @@ const BASE_URL = 'http://localhost:8080';
 document.getElementById('recommendationForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const customerId = document.getElementById('customerId').value;
+    let responseDiv = document.getElementById('response');
+    const spinner = document.getElementById('spinner');
+
     if (customerId) {
+        responseDiv.innerHTML = '';
+        spinner.style.display = 'block';
+
         fetch(`${BASE_URL}/recommendations?customerId=${encodeURIComponent(customerId)}`)
             .then(response => response.json())
             .then(data => {
+                spinner.style.display = 'none';
+
                 let recommendations = data.recommendations;
                 console.log(`recommendations count: ${recommendations.length}`)
                 if (recommendations.length > 0) {
@@ -33,13 +41,14 @@ document.getElementById('recommendationForm').addEventListener('submit', functio
                         </tr>`;
                     });
                     table += `</tbody></table>`;
-                    document.getElementById('response').innerHTML = table;
+                    responseDiv.innerHTML = table;
                 } else {
-                    document.getElementById('response').innerHTML = `<p class='text-warning'>No offers available.</p>`;
+                    responseDiv.innerHTML = `<p class='text-warning'>No offers available.</p>`;
                 }
             })
             .catch(error => {
-                document.getElementById('response').innerHTML = `<p class='text-danger'>Error fetching recommendations.</p>`;
+                spinner.style.display = 'none';
+                responseDiv.innerHTML = `<p class='text-danger'>Error fetching recommendations.</p>`;
                 console.error('Error:', error);
             });
     }
