@@ -9,10 +9,12 @@ import (
 	"gringotts-bank/service/customer"
 	"gringotts-bank/service/payment"
 	"strings"
+	"time"
 
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 	redispkg "github.com/redis/go-redis/v9"
+	"go.opentelemetry.io/otel"
 	"go.uber.org/zap"
 )
 
@@ -86,7 +88,7 @@ func (s Server) Run() error {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get recommendations"})
 		}
 
-		offerVariants := s.applyRules(ctx, customer, transactions)
+		offerVariants := s.computeOffers(ctx, customer, transactions)
 		recommendations, err := s.getRecommendations(ctx, offerVariants)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get recommendations"})
@@ -100,7 +102,12 @@ func (s Server) Run() error {
 	return app.Listen(s.listenAddr)
 }
 
-func (s Server) applyRules(ctx context.Context, customer Customer, transactions Transactions) OfferVariants {
+func (s Server) computeOffers(ctx context.Context, customer Customer, transactions Transactions) OfferVariants {
+	tp := otel.GetTracerProvider()
+	tracer := tp.Tracer("gringotts-bank-manual")
+	ctx, span := tracer.Start(ctx, "compute-offers")
+	defer span.End()
+
 	logger := log.Logger(ctx)
 
 	var offerVariants OfferVariants
@@ -122,6 +129,11 @@ func (s Server) applyRules(ctx context.Context, customer Customer, transactions 
 	if transactions.MonthlyUpiTransactionCount() > 10 {
 		offerVariants = append(offerVariants, UPI)
 		logger.Info("customer with high upi transactions", zap.String("offer_variants", offerVariants.String()))
+	}
+
+	// Intentional Delay
+	if customer.Name == "Hagrid" {
+		time.Sleep(3 * time.Second)
 	}
 
 	return offerVariants
