@@ -83,6 +83,12 @@ func (s Server) Run() error {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get recommendations"})
 		}
 
+		// intentional error
+		if customer.Name == "Hermoine" {
+			logger.Error("intentionally returning error for this customer", zap.String("customer_id", id))
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "failed to get recommendations"})
+		}
+
 		var transactions Transactions
 		logger.Info("fetching customer transactions", zap.String("customer_id", id))
 		err = s.paymentClient.GetCustomerTransactions(ctx, id, &transactions)
