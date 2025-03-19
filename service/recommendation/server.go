@@ -110,6 +110,13 @@ func (s Server) computeOffers(ctx context.Context, customer Customer, transactio
 
 	logger := log.Logger(ctx)
 
+	/*
+		RULES:
+		If age > 65 - Senior Citizen Fixed Deposit, Senior Citizen Recurring Deposit
+		If age between 24 and 30, monthly transaction amount is greater than 5 lakhs - Mutual Funds, Gold Credit Card
+		If age between 30 and 58, monthly transaction amount is greater than 5 lakhs - Fixed Deposit, Recurring deposit, Gold Credit Card
+		If monthly UPI transaction count is greater than 10 - RuPay UPI Credit Card
+	*/
 	var offerVariants OfferVariants
 	if customer.Age > 65 {
 		offerVariants = append(offerVariants, SeniorCitizen)
@@ -134,6 +141,7 @@ func (s Server) computeOffers(ctx context.Context, customer Customer, transactio
 	// Intentional Delay
 	if customer.Name == "Hagrid" {
 		time.Sleep(5 * time.Second)
+		logger.Info("intentional delay", zap.String("customer_name", customer.Name))
 	}
 
 	return offerVariants
@@ -142,7 +150,7 @@ func (s Server) computeOffers(ctx context.Context, customer Customer, transactio
 func (s Server) getRecommendations(ctx context.Context, offerVariants OfferVariants) (Recommendations, error) {
 	logger := log.Logger(ctx)
 
-	var recommendations Recommendations
+	recommendations := Recommendations{}
 	for _, offerVariant := range offerVariants {
 		offerVariantStr := offerVariant.String()
 
