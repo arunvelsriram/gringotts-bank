@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"gringotts-bank/pkg/contextutil"
 	"gringotts-bank/pkg/log"
 	"gringotts-bank/pkg/tracing"
 
@@ -16,7 +17,7 @@ const listenAddr = ":8081"
 const redisAddr = "localhost:16379"
 
 func main() {
-	ctx := context.Background()
+	ctx := context.WithValue(context.Background(), contextutil.ServiceNameKey, service)
 	logger := log.Logger(ctx)
 
 	shutDownFunc, err := tracing.Init(ctx, service, version)

@@ -59,6 +59,7 @@ func (s Server) Run() error {
 
 	app.Use(otelfiber.Middleware())
 	app.Use(middleware.BaggageToSpanAttributes())
+	// app.Use(middleware.DumpHeaders())
 
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})

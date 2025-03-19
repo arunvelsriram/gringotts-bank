@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"gringotts-bank/pkg/contextutil"
 	"gringotts-bank/pkg/log"
 	"gringotts-bank/pkg/tracing"
 	"gringotts-bank/service/frontend"
@@ -14,7 +15,7 @@ const version = "1.0.0"
 const listenAddr = ":8080"
 
 func main() {
-	ctx := context.Background()
+	ctx := context.WithValue(context.Background(), contextutil.ServiceNameKey, service)
 	logger := log.Logger(ctx)
 
 	shutDownFunc, err := tracing.Init(ctx, service, version)

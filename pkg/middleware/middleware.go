@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"gringotts-bank/pkg/log"
 
 	"github.com/gofiber/fiber/v2"
@@ -65,6 +66,23 @@ func BaggageToSpanAttributes() func(c *fiber.Ctx) error {
 		}
 
 		logger.Info("baggage to span attributes middleware - END")
+
+		return c.Next()
+	}
+}
+
+func DumpHeaders() func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		ctx := c.UserContext()
+		logger := log.Logger(ctx)
+
+		logger.Info("dump headers middleware - START")
+
+		for k, v := range c.GetReqHeaders() {
+			logger.Info(fmt.Sprintf(">>> %s: %s", k, v))
+		}
+
+		logger.Info("dump headers middleware - END")
 
 		return c.Next()
 	}

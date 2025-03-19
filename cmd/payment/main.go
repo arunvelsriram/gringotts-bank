@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"gringotts-bank/pkg/contextutil"
 	"gringotts-bank/pkg/log"
 	"gringotts-bank/pkg/tracing"
 	"gringotts-bank/service/payment"
@@ -15,7 +16,7 @@ const listenAddr = ":8083"
 const dbConnUrl = "postgresql://postgres:postgres@localhost:25432/postgres?sslmode=disable"
 
 func main() {
-	ctx := context.Background()
+	ctx := context.WithValue(context.Background(), contextutil.ServiceNameKey, service)
 	logger := log.Logger(ctx)
 
 	shutDownFunc, err := tracing.Init(ctx, service, version)

@@ -2,6 +2,7 @@ package log
 
 import (
 	"context"
+	"gringotts-bank/pkg/contextutil"
 	"sync"
 
 	"github.com/uptrace/opentelemetry-go-extra/otelzap"
@@ -16,7 +17,12 @@ var (
 
 func Logger(ctx context.Context) otelzap.LoggerWithCtx {
 	once.Do(func() {
-		l, err := zap.NewProduction()
+		serviceName, ok := ctx.Value(contextutil.ServiceNameKey).(string)
+		if !ok {
+			panic("service name not present in context")
+		}
+
+		l, err := zap.NewProduction(zap.Fields(zap.String("service", serviceName)))
 		if err != nil {
 			panic(err)
 		}
