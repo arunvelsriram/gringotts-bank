@@ -3,6 +3,7 @@ package payment
 import (
 	"context"
 	"gringotts-bank/pkg/log"
+	"gringotts-bank/pkg/middleware"
 	"gringotts-bank/pkg/postgres"
 
 	"github.com/gofiber/contrib/otelfiber"
@@ -21,6 +22,7 @@ func (s Server) Run() error {
 	app := fiber.New(fiber.Config{AppName: s.serviceName})
 
 	app.Use(otelfiber.Middleware())
+	app.Use(middleware.BaggageToSpanAttributes())
 
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})

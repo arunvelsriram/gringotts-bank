@@ -10,7 +10,7 @@ document.getElementById('recommendationForm').addEventListener('submit', functio
         responseDiv.innerHTML = '';
         spinner.style.display = 'block';
 
-        fetch(`${BASE_URL}/recommendations?customerId=${encodeURIComponent(customerId)}`)
+        fetch(`${BASE_URL}/recommendations?customerId=${encodeURIComponent(customerId)}`, {headers: {'X-Customer-Id': customerId}})
             .then(response => response.json())
             .then(data => {
                 spinner.style.display = 'none';

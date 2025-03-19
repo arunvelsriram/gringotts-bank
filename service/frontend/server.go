@@ -4,6 +4,7 @@ import (
 	"context"
 	"gringotts-bank/pkg/http"
 	"gringotts-bank/pkg/log"
+	"gringotts-bank/pkg/middleware"
 	"gringotts-bank/service/customer"
 	"gringotts-bank/service/recommendation"
 
@@ -23,6 +24,8 @@ func (s Server) Run() error {
 	app := fiber.New(fiber.Config{AppName: s.serviceName})
 
 	app.Use(otelfiber.Middleware())
+	app.Use(middleware.TraceBaggagePopulator())
+	app.Use(middleware.BaggageToSpanAttributes())
 
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"health": "ok"})
