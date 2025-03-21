@@ -36,3 +36,13 @@ Requires [GNU Parallel](https://savannah.gnu.org/projects/parallel/) to start se
 ```shell
 make run
 ```
+
+### Urls:
+
+| App            | URL                    |
+|----------------|------------------------|
+| Frontend       | http://localhost:8080  |
+| Customer       | http://localhost:8081  |
+| Recommendation | http://localhost:8082  |
+| Payment        | http://localhost:8083  |
+| Jaeger         | http://localhost:16686 |
