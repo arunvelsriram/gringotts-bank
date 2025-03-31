@@ -2,6 +2,12 @@
 
 Simple Microservices app to demonstarte Distributed Tracing.
 
+## Talk
+
+[Solving Microservices Mysteries with Distributed Tracing](https://youtu.be/NR2e9x3DjtA?si=FBwKwpU2nLISbOUi)
+
+Slides: [Solving-Microservices-Mysteries-with-Distributed-Tracing.pdf](./Solving-Microservices-Mysteries-with-Distributed-Tracing.pdf)
+
 ## Start Dependent Apps (Database, Open Telemetry Collector, Jaeger)
 
 ```shell
